@@ -11,7 +11,7 @@ spec:
   executor:
     replicas: 1
   logFileDirectory:
-    customLogDirectory: local:///spark-logs/eventlogs/
+    customLogDirectory: file:///spark-logs/eventlogs/
   driver:
     config:
       volumeMounts:
