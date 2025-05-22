@@ -1,0 +1,9 @@
+apiVersion: v2
+appVersion: 25.3.0
+description: The Stackable Operator for Apache Spark-on-Kubernetes
+home: https://github.com/stackabletech/spark-k8s-operator
+maintainers:
+- name: Stackable
+  url: https://www.stackable.tech
+name: spark-k8s-operator
+version: 25.3.0

@@ -1,0 +1,2 @@
+ curl -X GET --header 'Accept: application/json' 'https://oci.stackable.tech/api/v2.0/projects/sdp/repositories/trino/artifacts?page=1&page_size=25' | jq --raw-output '.[] | select(.extra_attrs.config != {}) | .tags[]?.name'
+

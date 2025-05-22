@@ -1,0 +1,48 @@
+---
+apiVersion: airflow.stackable.tech/v1alpha1
+kind: AirflowCluster
+metadata:
+  name: airflow
+spec:
+  image:
+    productVersion: 2.10.4
+  clusterConfig:
+    loadExamples: false
+    exposeConfig: false
+    listenerClass: external-unstable
+    credentialsSecret: simple-airflow-credentials
+    dagsGitSync: 
+      - repo: https://github.com/TrieuBui1012/data-lakehouse-platform.git
+        branch: "main" 
+        gitFolder: "airflow/dags" 
+        depth: 10 
+        wait: 20s 
+        credentialsSecret: git-credentials 
+        # gitSyncConf: # optional
+        #   --rev: HEAD 
+        #   # --rev: git-sync-tag # N.B. tag must be covered by "depth" (the number of commits to clone)
+        #   # --rev: 39ee3598bd9946a1d958a448c9f7d3774d7a8043 # N.B. commit must be covered by "depth"
+        #   --git-config: http.sslCAInfo:/tmp/ca-cert/ca.crt 
+  webservers:
+    roleGroups:
+      default:
+        replicas: 1
+    envOverrides: &envOverrides
+      AIRFLOW__LOGGING__REMOTE_LOGGING: "True"
+      AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER: s3://airflow/airflow-task-logs/
+      # The name of the S3 connection created in the Airflow Web UI
+      AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID: s3
+  kubernetesExecutors:
+    config:
+      resources:
+        cpu:
+          min: 400m
+          max: 800m
+        memory:
+          limit: 2Gi
+    envOverrides: *envOverrides
+  schedulers:
+    roleGroups:
+      default:
+        replicas: 1
+    envOverrides: *envOverrides

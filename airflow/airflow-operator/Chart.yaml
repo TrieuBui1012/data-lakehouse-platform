@@ -1,0 +1,9 @@
+apiVersion: v2
+appVersion: 25.3.0
+description: The Stackable Operator for Apache Airflow
+home: https://github.com/stackabletech/airflow-operator
+maintainers:
+- name: Stackable
+  url: https://www.stackable.tech
+name: airflow-operator
+version: 25.3.0

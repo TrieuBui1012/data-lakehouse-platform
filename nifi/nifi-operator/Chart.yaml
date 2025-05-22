@@ -1,0 +1,9 @@
+apiVersion: v2
+appVersion: 25.3.0
+description: The Stackable Operator for Apache NiFi
+home: https://github.com/stackabletech/nifi-operator
+maintainers:
+- name: Stackable
+  url: https://www.stackable.tech
+name: nifi-operator
+version: 25.3.0

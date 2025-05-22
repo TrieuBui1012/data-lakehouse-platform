@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafbat-ui-configmap
+data:
+  config.yml: |-
+    kafka:
+      clusters:
+        - name: simple-kafka-broker-default-bootstrap:9092
+    auth:
+      type: disabled
+    management:
+      health:
+        ldap:
+          enabled: false

@@ -1,0 +1,49 @@
+---
+apiVersion: spark.stackable.tech/v1alpha1
+kind: SparkApplication
+metadata:
+  name: load-benchmark
+  namespace: spark
+spec:
+  sparkImage:
+    custom: "docker.io/trieubui1012/spark-k8s:3.5.5-stackable25.3.0" 
+    productVersion: "3.5.5" 
+  mode: cluster
+  mainApplicationFile: s3a://spark-apps/load-benchmark.py
+  driver:
+    config:
+      resources:
+        cpu:
+          min: "1"
+          max: "2"
+        memory:
+          limit: "2Gi"
+  executor:
+    replicas: 2
+    config:
+      resources:
+        cpu:
+          min: "1"
+          max: "2"
+        memory:
+          limit: "2Gi"
+  s3connection: 
+    inline:
+      host: s3.cloudfly.vn
+      port: 8080
+      accessStyle: Path
+      credentials:
+        secretClass: s3-credentials-class 
+  logFileDirectory: 
+    s3:
+      prefix: eventlogs/ 
+      bucket:
+        inline:
+          bucketName: spark-logs 
+          connection:
+            inline:
+              host: s3.cloudfly.vn
+              port: 8080
+              accessStyle: Path
+              credentials:
+                secretClass: history-credentials-class 

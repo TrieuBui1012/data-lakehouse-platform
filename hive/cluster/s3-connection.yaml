@@ -1,0 +1,19 @@
+apiVersion: s3.stackable.tech/v1alpha1
+kind: S3Connection
+metadata:
+  name: s3-connection
+spec:
+  host: s3.cloudfly.vn
+  port: 8080
+  accessStyle: Path
+  credentials:
+    secretClass: hive-s3-secret-class
+# ---
+# apiVersion: s3.stackable.tech/v1alpha1
+# kind: S3Bucket
+# metadata:
+#   name: hudi-bucket
+# spec:
+#   bucketName: hudi
+#   connection:
+#     reference: s3-connection-resource

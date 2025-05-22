@@ -1,0 +1,28 @@
+---
+apiVersion: spark.stackable.tech/v1alpha1
+kind: SparkHistoryServer
+metadata:
+  name: spark-history
+spec:
+  image:
+    productVersion: 3.5.5
+  logFileDirectory:
+    s3:
+      prefix: eventlogs/
+      bucket:
+        inline:
+          bucketName: spark-logs
+          connection:
+            inline:
+              host: s3.cloudfly.vn
+              port: 8080
+              accessStyle: Path
+              credentials:
+                secretClass: history-credentials-class
+  sparkConf:
+  nodes:
+    roleGroups:
+      default:
+        replicas: 1
+        config:
+          cleaner: true
