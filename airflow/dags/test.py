@@ -4,14 +4,13 @@ import json
 import pendulum
 
 from airflow.decorators import dag, task
-
 @dag(
     schedule=None,
     start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
     catchup=False,
     tags=["example"],
 )
-def test():
+def tutorial_taskflow_api():
     """
     ### TaskFlow API Tutorial Documentation
     This is a simple data pipeline example which demonstrates the use of
@@ -20,10 +19,7 @@ def test():
     located
     [here](https://airflow.apache.org/docs/apache-airflow/stable/tutorial_taskflow_api.html)
     """
-    @task.virtualenv(
-        requirements=["boto3==1.35.95", "json"],
-        system_site_packages=False,
-    )
+    @task()
     def extract():
         """
         #### Extract task
@@ -35,13 +31,8 @@ def test():
 
         order_data_dict = json.loads(data_string)
         return order_data_dict
-    
-    
-    @task.virtualenv(
-        requirements=["boto3==1.35.95", "json"],
-        system_site_packages=False,
-    )
-    def transform(order_data_dict: dict) -> dict:
+    @task(multiple_outputs=True)
+    def transform(order_data_dict: dict):
         """
         #### Transform task
         A simple Transform task which takes in the collection of order data and
@@ -53,11 +44,7 @@ def test():
             total_order_value += value
 
         return {"total_order_value": total_order_value}
-    
-    @task.virtualenv(
-        requirements=["boto3==1.35.95", "json"],
-        system_site_packages=False,
-    )
+    @task()
     def load(total_order_value: float):
         """
         #### Load task
@@ -69,4 +56,4 @@ def test():
     order_data = extract()
     order_summary = transform(order_data)
     load(order_summary["total_order_value"])
-test()
+tutorial_taskflow_api()
