@@ -30,8 +30,7 @@ with DAG(
 
     with open(yaml_path, "r") as file:
         crd = file.read()
-    with open("/run/secrets/kubernetes.io/serviceaccount/namespace", "r") as file:
-        ns = file.read()
+    ns = "spark"
 
     document = load_body_to_dict(crd)
     application_name = "pyspark-pi-" + datetime.now(timezone.utc).strftime(
