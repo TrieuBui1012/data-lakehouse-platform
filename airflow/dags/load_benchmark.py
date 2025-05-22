@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 from airflow import DAG
 from airflow.exceptions import AirflowException
 from airflow.utils import yaml
