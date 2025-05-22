@@ -7,22 +7,25 @@ spec:
   image:
     productVersion: 3.5.5
   logFileDirectory:
-    s3:
-      prefix: eventlogs/
-      bucket:
-        inline:
-          bucketName: spark-logs
-          connection:
-            inline:
-              host: s3.cloudfly.vn
-              port: 8080
-              accessStyle: Path
-              credentials:
-                secretClass: history-credentials-class
-  sparkConf:
+    customLogDirectory: /spark-logs/eventlogs/
   nodes:
+    nodes:
     roleGroups:
       default:
         replicas: 1
         config:
           cleaner: true
+    podOverrides:
+      spec:
+        containers:
+        - name: spark-history
+          volumeMounts:
+          - name: spark-logs
+            mountPath: /spark-logs/eventlogs/
+        volumes:
+        - name: spark-logs
+          persistentVolumeClaim:
+            claimName: spark-history-pvc
+
+  sparkConf:
+  

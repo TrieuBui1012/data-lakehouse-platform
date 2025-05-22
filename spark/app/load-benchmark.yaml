@@ -10,6 +10,8 @@ spec:
     productVersion: "3.5.5" 
   mode: cluster
   mainApplicationFile: s3a://spark-apps/load-benchmark.py
+  logFileDirectory:
+    customLogDirectory: /spark-logs/eventlogs/
   driver:
     config:
       resources:
@@ -18,6 +20,13 @@ spec:
           max: "2"
         memory:
           limit: "2Gi"
+        volumeMounts:
+        - name: spark-logs
+          mountPath: /spark-logs/eventlogs/
+  volumes:
+  - name: spark-logs
+    persistentVolumeClaim:
+      claimName: spark-history-pvc
   executor:
     replicas: 2
     config:
@@ -27,23 +36,3 @@ spec:
           max: "2"
         memory:
           limit: "2Gi"
-  s3connection: 
-    inline:
-      host: s3.cloudfly.vn
-      port: 8080
-      accessStyle: Path
-      credentials:
-        secretClass: s3-credentials-class 
-  logFileDirectory: 
-    s3:
-      prefix: eventlogs/ 
-      bucket:
-        inline:
-          bucketName: spark-logs 
-          connection:
-            inline:
-              host: s3.cloudfly.vn
-              port: 8080
-              accessStyle: Path
-              credentials:
-                secretClass: history-credentials-class 

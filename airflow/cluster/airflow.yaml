@@ -5,8 +5,9 @@ metadata:
   name: airflow
 spec:
   image:
-    custom: "docker.io/trieubui1012/airflow:2.10.4-stackable25.3.0-amd64" 
+    custom: "trieubui1012/airflow:2.10.4-stackable25.3.0-amd64-fixeds3put" 
     productVersion: 2.10.4
+    pullPolicy: IfNotPresent
   clusterConfig:
     loadExamples: false
     exposeConfig: false
