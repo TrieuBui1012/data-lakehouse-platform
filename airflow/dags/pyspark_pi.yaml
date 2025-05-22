@@ -10,3 +10,12 @@ spec:
   mainApplicationFile: local:///stackable/spark/examples/src/main/python/pi.py
   executor:
     replicas: 1
+  driver:
+    config:
+        volumeMounts:
+        - name: spark-logs
+          mountPath: /spark-logs/eventlogs/
+  volumes:
+  - name: spark-logs
+    persistentVolumeClaim:
+      claimName: spark-history-pvc

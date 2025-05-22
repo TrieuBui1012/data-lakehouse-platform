@@ -7,6 +7,10 @@
 6. Optional: To customize the initial settings, click Longhorn Default Settings and edit the configuration. For help customizing the settings, refer to the Longhorn documentation.
 7. Click Install.
 **Result**: Longhorn is deployed in the Kubernetes cluster.
+8. Install NFSv4 client to mount
+```
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.8.1/deploy/prerequisite/longhorn-nfs-installation.yaml -n longhorn-system
+```
 
 # Accessing Longhorn from the Rancher UI
 1. Go to the cluster where Longhorn is installed. In the left navigation menu, click Longhorn.
