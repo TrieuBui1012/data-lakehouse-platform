@@ -3,14 +3,15 @@ from airflow import DAG
 from airflow.exceptions import AirflowException
 from airflow.utils import yaml
 import os
+import pendulum
 from stackable.spark_kubernetes_sensor import SparkKubernetesSensor
 from stackable.spark_kubernetes_operator import SparkKubernetesOperator
 
 
 with DAG(  
-    dag_id="sparkapp_dag",
+    dag_id="load_benchmark",
     schedule_interval=None,
-    start_date=datetime(2025, 1, 1),
+    start_date=pendulum.datetime(2025, 1, 1, tz="Asia/Bangkok"),
     catchup=False,
     dagrun_timeout=timedelta(minutes=60),
     tags=["example"],
@@ -25,7 +26,7 @@ with DAG(
         return body_dict
 
     yaml_path = os.path.join(
-        os.environ.get("AIRFLOW__CORE__DAGS_FOLDER", ""), "pyspark_pi.yaml"
+        os.environ.get("AIRFLOW__CORE__DAGS_FOLDER", ""), "load_benchmark.yaml"
     )
 
     with open(yaml_path, "r") as file:
@@ -33,13 +34,13 @@ with DAG(
     ns = "spark"
 
     document = load_body_to_dict(crd)
-    application_name = "pyspark-pi-" + datetime.now(timezone.utc).strftime(
+    application_name = "load-benchmark-" + pendulum.now('Asia/Bangkok').strftime(
         "%Y%m%d%H%M%S"
     )
     document.update({"metadata": {"name": application_name, "namespace": ns}})
 
     t1 = SparkKubernetesOperator(  
-        task_id="spark_pi_submit",
+        task_id="load_benchmark_submit",
         namespace=ns,
         application_file=document,
         do_xcom_push=True,
@@ -47,9 +48,9 @@ with DAG(
     )
 
     t2 = SparkKubernetesSensor(  
-        task_id="spark_pi_monitor",
+        task_id="load_benchmark_monitor",
         namespace=ns,
-        application_name="{{ task_instance.xcom_pull(task_ids='spark_pi_submit')['metadata']['name'] }}",
+        application_name="{{ task_instance.xcom_pull(task_ids='load_benchmark_submit')['metadata']['name'] }}",
         poke_interval=5,
         dag=dag,
     )
