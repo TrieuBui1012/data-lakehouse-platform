@@ -4,6 +4,7 @@ import json
 import pendulum
 
 from airflow.decorators import dag, task
+
 @dag(
     schedule=None,
     start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
@@ -20,7 +21,7 @@ def test():
     [here](https://airflow.apache.org/docs/apache-airflow/stable/tutorial_taskflow_api.html)
     """
     @task.virtualenv(
-        requirements=["boto3==1.35.95"],
+        requirements=["boto3==1.35.95", "json"],
         system_site_packages=False,
     )
     def extract():
@@ -37,7 +38,7 @@ def test():
     
     
     @task.virtualenv(
-        requirements=["boto3==1.35.95"],
+        requirements=["boto3==1.35.95", "json"],
         system_site_packages=False,
     )
     def transform(order_data_dict: dict) -> dict:
@@ -54,7 +55,7 @@ def test():
         return {"total_order_value": total_order_value}
     
     @task.virtualenv(
-        requirements=["boto3==1.35.95"],
+        requirements=["boto3==1.35.95", "json"],
         system_site_packages=False,
     )
     def load(total_order_value: float):
