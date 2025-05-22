@@ -11,7 +11,7 @@ spec:
   mode: cluster
   mainApplicationFile: s3a://spark-apps/load-benchmark.py
   logFileDirectory:
-    customLogDirectory: /spark-logs/eventlogs/
+    customLogDirectory: local:///spark-logs/eventlogs/
   driver:
     config:
       resources:

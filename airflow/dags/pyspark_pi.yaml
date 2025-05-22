@@ -11,12 +11,12 @@ spec:
   executor:
     replicas: 1
   logFileDirectory:
-    customLogDirectory: /spark-logs/eventlogs/
+    customLogDirectory: local:///spark-logs/eventlogs/
   driver:
     config:
-        volumeMounts:
-        - name: spark-logs
-          mountPath: /spark-logs/eventlogs/
+      volumeMounts:
+      - name: spark-logs
+        mountPath: /spark-logs/eventlogs/
   volumes:
   - name: spark-logs
     persistentVolumeClaim:
