@@ -54,3 +54,5 @@ The name or connection ID is minio, the type is Amazon Web Services, the AWS Acc
   "endpoint_url": "http://minio.default.svc.cluster.local:9000"
 }
 
+6. Define an in-cluster Kubernetes connection
+To start a Spark job, Airflow must communicate with Kubernetes, requiring an in-cluster connection. This can be created through the Webserver UI by enabling the "in cluster configuration" setting of Kubernetes Cluster Connection type, named the conn as kubernetes_in_cluster.

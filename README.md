@@ -67,6 +67,7 @@ echo 200000 > /proc/sys/kernel/pid_max
 sudo apt-get update
 sudo apt-get install chrony
 sudo systemctl enable --now chrony
+apt-get install nfs-common
 ```
 ## Configure netplan if neccessary:
 ```

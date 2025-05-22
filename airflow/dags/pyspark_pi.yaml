@@ -10,6 +10,8 @@ spec:
   mainApplicationFile: local:///stackable/spark/examples/src/main/python/pi.py
   executor:
     replicas: 1
+  logFileDirectory:
+    customLogDirectory: /spark-logs/eventlogs/
   driver:
     config:
         volumeMounts:

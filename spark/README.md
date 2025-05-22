@@ -10,9 +10,6 @@ helm install --wait spark-k8s-operator stackable-stable/spark-k8s-operator --ver
 ```
 2. Deploy Spark History Server
 ```
-kubectl delete -f ./spark/cluster/history-secret-class.yaml -n spark --wait
-kubectl delete -f ./spark/cluster/history-s3-credentials.yaml -n spark --wait
-kubectl delete -f ./spark/cluster/s3-secret-class.yaml -n spark --wait
-kubectl delete -f ./spark/cluster/s3-credentials.yaml -n spark --wait
+kubectl apply -f ./spark/cluster/history-pvc.yaml -n spark
 kubectl apply -f ./spark/cluster/spark-history-server.yaml -n spark --wait
 ```
