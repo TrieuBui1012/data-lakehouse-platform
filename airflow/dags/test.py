@@ -19,7 +19,10 @@ def test():
     located
     [here](https://airflow.apache.org/docs/apache-airflow/stable/tutorial_taskflow_api.html)
     """
-    @task()
+    @task.virtualenv(
+        requirements=["boto3==1.35.95"],
+        system_site_packages=False,
+    )
     def extract():
         """
         #### Extract task
@@ -31,7 +34,12 @@ def test():
 
         order_data_dict = json.loads(data_string)
         return order_data_dict
-    @task(multiple_outputs=True)
+    
+    
+    @task.virtualenv(
+        requirements=["boto3==1.35.95"],
+        system_site_packages=False,
+    )(multiple_outputs=True)
     def transform(order_data_dict: dict):
         """
         #### Transform task
@@ -44,7 +52,10 @@ def test():
             total_order_value += value
 
         return {"total_order_value": total_order_value}
-    @task()
+    @task.virtualenv(
+        requirements=["boto3==1.35.95"],
+        system_site_packages=False,
+    )
     def load(total_order_value: float):
         """
         #### Load task
