@@ -39,8 +39,8 @@ def test():
     @task.virtualenv(
         requirements=["boto3==1.35.95"],
         system_site_packages=False,
-    )(multiple_outputs=True)
-    def transform(order_data_dict: dict):
+    )
+    def transform(order_data_dict: dict) -> dict:
         """
         #### Transform task
         A simple Transform task which takes in the collection of order data and
@@ -52,6 +52,7 @@ def test():
             total_order_value += value
 
         return {"total_order_value": total_order_value}
+    
     @task.virtualenv(
         requirements=["boto3==1.35.95"],
         system_site_packages=False,
