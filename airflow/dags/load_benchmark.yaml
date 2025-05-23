@@ -2,7 +2,7 @@
 apiVersion: spark.stackable.tech/v1alpha1
 kind: SparkApplication
 metadata:
-  name: load-benchmark-20250524002959
+  name: load-benchmark
   namespace: spark
 spec:
   sparkImage:
