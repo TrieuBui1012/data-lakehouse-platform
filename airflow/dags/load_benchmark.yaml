@@ -6,7 +6,7 @@ metadata:
   namespace: spark
 spec:
   sparkImage:
-    custom: "docker.io/trieubui1012/spark-k8s:3.5.5-stackable25.3.0" 
+    custom: "docker.io/trieubui1012/spark-k8s:3.5.5-stackable25.3.0v1" 
     productVersion: "3.5.5"
   mode: cluster
   mainApplicationFile: s3a://spark-apps/load-benchmark.py
