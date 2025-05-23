@@ -11,9 +11,9 @@ def write_tables_to_hudi(catalog, database, tables, keys_mapping, database_targe
     for table in tables:
         path = f"{base_path}/{database_target}/{table}"
         df = spark.sql(f"SELECT * FROM {catalog}.{database}.{table}")
-        
+        df_repartitioned = df.repartition(20)
         (
-           df.write.format("hudi")
+           df_repartitioned.write.format("hudi")
            .option('hoodie.table.name', table)
            .option("hoodie.datasource.write.operation","insert_overwrite_table")
            .option("hoodie.datasource.write.secondarykey.column", ",".join(keys_mapping[table]))
