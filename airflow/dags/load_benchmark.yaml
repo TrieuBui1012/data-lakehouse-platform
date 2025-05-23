@@ -43,7 +43,7 @@ spec:
     config:
       resources:
         cpu:
-          min: "2"
-          max: "2"
+          min: "3"
+          max: "3"
         memory:
           limit: "5Gi"
