@@ -2,12 +2,13 @@
 apiVersion: spark.stackable.tech/v1alpha1
 kind: SparkApplication
 metadata:
-  name: load-benchmark
+  name: load-benchmark-20250524002959
   namespace: spark
 spec:
   sparkImage:
     custom: "docker.io/trieubui1012/spark-k8s:3.5.5-stackable25.3.0v1" 
     productVersion: "3.5.5"
+    pullPolicy: IfNotPresent
   mode: cluster
   mainApplicationFile: s3a://spark-apps/load-benchmark.py
   s3connection: 
