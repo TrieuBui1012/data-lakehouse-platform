@@ -18,6 +18,7 @@ def write_tables_to_hudi(catalog, database, tables, keys_mapping, database_targe
            .option("hoodie.datasource.write.operation","insert_overwrite_table")
            .option("hoodie.datasource.write.secondarykey.column", ",".join(keys_mapping[table]))
            .option("hoodie.datasource.write.hive_style_partitioning", "true")
+           .option("hoodie.insert.shuffle.parallelism", "100")
            .option("hoodie.datasource.hive_sync.enable", "true")
            .option("hoodie.datasource.hive_sync.mode", "hms")
            .option("hoodie.datasource.hive_sync.database", database_target)
