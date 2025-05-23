@@ -9,24 +9,42 @@ spark = (
 
 def write_tables_to_hudi(catalog, database, tables, keys_mapping, database_target, base_path):
     for table in tables:
-        path = f"{base_path}/{database_target}/{table}"
-        df = spark.sql(f"SELECT * FROM {catalog}.{database}.{table}")
-        df_repartitioned = df.repartition(20)
-        (
-           df_repartitioned.write.format("hudi")
-           .option('hoodie.table.name', table)
-           .option("hoodie.datasource.write.operation","insert_overwrite_table")
-           .option("hoodie.datasource.write.secondarykey.column", ",".join(keys_mapping[table]))
-           .option("hoodie.datasource.write.hive_style_partitioning", "true")
-           .option("hoodie.datasource.hive_sync.enable", "true")
-           .option("hoodie.datasource.hive_sync.mode", "hms")
-           .option("hoodie.datasource.hive_sync.database", database_target)
-           .option("hoodie.datasource.hive_sync.table", table)
-           .option("hoodie.datasource.hive_sync.partition_extractor_class", "org.apache.hudi.hive.MultiPartKeysValueExtractor")
-           .option("hoodie.datasource.hive_sync.metastore.uris", spark.conf.get("spark.hive.metastore.uris"))
-           .mode("overwrite")
-           .save(path)
-        )
+        # path = f"{base_path}/{database_target}/{table}"
+        # df = spark.sql(f"SELECT * FROM {catalog}.{database}.{table}")
+        # df_repartitioned = df.repartition(20)
+        # (
+        #    df_repartitioned.write.format("hudi")
+        #    .option('hoodie.table.name', table)
+        #    .option("hoodie.datasource.write.operation","insert_overwrite_table")
+        #    .option("hoodie.datasource.write.secondarykey.column", ",".join(keys_mapping[table]))
+        #    .option("hoodie.datasource.write.hive_style_partitioning", "true")
+        #    .option("hoodie.datasource.hive_sync.enable", "true")
+        #    .option("hoodie.datasource.hive_sync.mode", "hms")
+        #    .option("hoodie.datasource.hive_sync.database", database_target)
+        #    .option("hoodie.datasource.hive_sync.table", table)
+        #    .option("hoodie.datasource.hive_sync.metastore.uris", spark.conf.get("spark.hive.metastore.uris"))
+        #    .mode("overwrite")
+        #    .save(path)
+        # )
+        primary_key = ",".join(keys_mapping[table])
+        spark.sql(f"""
+            CREATE TABLE IF NOT EXISTS {database_target}.{table}
+            USING hudi
+            LOCATION '{base_path}/{database_target}/{table}'
+            OPTIONS (
+                type = 'cow',
+                primaryKey = '{primary_key}',
+                preCombineField = 'load_timestamp',
+                hoodie.metadata.enable = 'false',
+                hoodie.datasource.write.hive_style_partitioning = 'true',
+                hoodie.datasource.hive_sync.enable = 'true',
+                hoodie.datasource.hive_sync.mode = 'hms',
+                hoodie.datasource.hive_sync.database = '{database_target}',
+                hoodie.datasource.hive_sync.table = '{table}',
+                hoodie.datasource.hive_sync.metastore.uris = '{spark.conf.get("spark.hive.metastore.uris")}'
+            )
+            AS SELECT *, current_timestamp() AS load_timestamp FROM {catalog}.{database}.{table};
+        """)
 
 tpch_tables = [
     "customer",
