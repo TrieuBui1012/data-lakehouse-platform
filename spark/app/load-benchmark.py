@@ -8,8 +8,8 @@ spark = (
 )
 
 def write_tables_to_hudi(catalog, database, tables, keys_mapping, database_target, base_path):
-    path = f"{base_path}/{database_target}"
     for table in tables:
+        path = f"{base_path}/{database_target}/{table}"
         df = spark.sql(f"SELECT * FROM {catalog}.{database}.{table}")
         
         (
@@ -23,7 +23,7 @@ def write_tables_to_hudi(catalog, database, tables, keys_mapping, database_targe
            .option("hoodie.datasource.hive_sync.database", database_target)
            .option("hoodie.datasource.hive_sync.table", table)
            .option("hoodie.datasource.hive_sync.partition_extractor_class", "org.apache.hudi.hive.MultiPartKeysValueExtractor")
-           .option("hoodie.datasource.hive_sync.metastore.uris", spark.conf.get("hive.metastore.uris"))
+           .option("hoodie.datasource.hive_sync.metastore.uris", spark.conf.get("spark.hive.metastore.uris"))
            .mode("overwrite")
            .save(path)
         )
@@ -105,7 +105,7 @@ tpcds_keys_mapping = {
 
 base_path = "s3a://lakehouse"
 
-write_tables_to_hudi(catalog="tpch", database="sf10", tables=tpch_tables, keys_mapping=tpch_keys_mapping, database_target="tpch", base_path=base_path)
-write_tables_to_hudi(catalog="tpcds", database="sf10", tables=tpcds_tables, keys_mapping=tpcds_keys_mapping, database_target="tpcds", base_path=base_path)
+write_tables_to_hudi(catalog="tpch", database="sf10", tables=tpch_tables, keys_mapping=tpch_keys_mapping, database_target="tpch_hudi", base_path=base_path)
+write_tables_to_hudi(catalog="tpcds", database="sf10", tables=tpcds_tables, keys_mapping=tpcds_keys_mapping, database_target="tpcds_hudi", base_path=base_path)
 
 spark.stop()
