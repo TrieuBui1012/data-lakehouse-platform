@@ -46,4 +46,4 @@ spec:
           min: "2"
           max: "2"
         memory:
-          limit: "6Gi"
+          limit: "5Gi"
