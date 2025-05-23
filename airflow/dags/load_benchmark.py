@@ -13,7 +13,7 @@ with DAG(
     schedule_interval=None,
     start_date=pendulum.datetime(2025, 1, 1, tz="Asia/Bangkok"),
     catchup=False,
-    dagrun_timeout=timedelta(hours=4),
+    dagrun_timeout=timedelta(hours=5),
     tags=["load", "benchmark"],
     params={},
 ) as dag:
