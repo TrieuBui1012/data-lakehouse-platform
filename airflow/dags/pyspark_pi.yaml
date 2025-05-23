@@ -10,7 +10,7 @@ spec:
   mainApplicationFile: local:///stackable/spark/examples/src/main/python/pi.py
   executor:
     replicas: 1
-    s3connection: 
+  s3connection: 
     inline:
       host: s3.cloudfly.vn
       port: 8080

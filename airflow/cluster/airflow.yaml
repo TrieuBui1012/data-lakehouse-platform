@@ -44,6 +44,13 @@ spec:
           limit: 2Gi
     envOverrides: *envOverrides
   schedulers:
+    config:
+      resources:
+        cpu:
+          min: 400m
+          max: 800m
+        memory:
+          limit: 2Gi
     roleGroups:
       default:
         replicas: 1

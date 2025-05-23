@@ -7,7 +7,7 @@ metadata:
 spec:
   sparkImage:
     custom: "docker.io/trieubui1012/spark-k8s:3.5.5-stackable25.3.0" 
-    productVersion: "3.5.5" 
+    productVersion: "3.5.5"
   mode: cluster
   mainApplicationFile: s3a://spark-apps/load-benchmark.py
   s3connection: 
@@ -29,7 +29,7 @@ spec:
               port: 8080
               accessStyle: Path
               credentials:
-                secretClass: s3-credentials-class
+                secretClass: history-credentials-class
   driver:
     config:
       resources:
