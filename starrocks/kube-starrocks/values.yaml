@@ -427,11 +427,11 @@ starrocks:
     resources:
       requests:
         cpu: 2
-        memory: 2Gi
+        memory: 4Gi
       # If you want to remove one resource limit, e.g. cpu, you can set it to cpu: "unlimited".
       limits:
         cpu: 2
-        memory: 2Gi
+        memory: 4Gi
     # fe storageSpec for persistent metadata.
     # Note: Once set, the following fields will not be allowed to be modified.
     storageSpec:
@@ -1073,11 +1073,11 @@ starrocks:
     resources:
       requests:
         cpu: 2
-        memory: 2Gi
+        memory: 4Gi
       # If you want to remove one resource limit, e.g. cpu, you can set it to cpu: "unlimited".
       limits:
         cpu: 2
-        memory: 2Gi
+        memory: 4Gi
     # be storageSpec for persistent storage.
     # Note: Once set, the following fields will not be allowed to be modified.
     storageSpec:

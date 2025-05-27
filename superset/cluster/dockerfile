@@ -1,0 +1,18 @@
+FROM oci.stackable.tech/sdp/superset:4.1.1-stackable25.3.0
+
+RUN pip install starrocks
+
+USER root
+RUN microdnf install -y \
+      gcc \
+      gcc-c++ \
+      make \
+      pkgconfig \
+      python3-devel \
+      mariadb-connector-c-devel \
+      openssl-devel \
+    && microdnf clean all
+
+USER 1000
+
+RUN pip install mysqlclient

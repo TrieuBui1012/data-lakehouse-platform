@@ -5,6 +5,7 @@ metadata:
   name: simple-superset
 spec:
   image:
+    custom: "docker.io/trieubui1012/superset:4.1.1-stackable25.3.0v1"
     productVersion: 4.1.1
   clusterConfig:
     credentialsSecret: simple-superset-credentials

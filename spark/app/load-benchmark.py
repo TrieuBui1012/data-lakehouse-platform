@@ -9,25 +9,6 @@ spark = (
 
 def write_tables_to_hudi(catalog, database, tables, keys_mapping, database_target, base_path):
     for table in tables:
-        # path = f"{base_path}/{database_target}/{table}"
-        # df = spark.sql(f"SELECT * FROM {catalog}.{database}.{table}")
-        # df_added = df.withColumn("load_timestamp", current_timestamp())
-        # (
-        #    df_added.write.format("hudi")
-        #    .option('hoodie.table.name', table)
-        #    .option("hoodie.metadata.enable", "false")
-        #    .option("hoodie.datasource.write.operation","bulk_insert")
-        #    .option("hoodie.datasource.write.recordkey.field", ",".join(keys_mapping[table]))
-        #    .option("hoodie.datasource.write.precombine.field", "load_timestamp")
-        #    .option("hoodie.datasource.write.hive_style_partitioning", "true")
-        #    .option("hoodie.datasource.hive_sync.enable", "true")
-        #    .option("hoodie.datasource.hive_sync.mode", "hms")
-        #    .option("hoodie.datasource.hive_sync.database", database_target)
-        #    .option("hoodie.datasource.hive_sync.table", table)
-        #    .option("hoodie.datasource.hive_sync.metastore.uris", spark.conf.get("spark.hive.metastore.uris"))
-        #    .mode("overwrite")
-        #    .save(path)
-        # )
         primary_key = ",".join(keys_mapping[table])
         spark.sql(f"""
             CREATE TABLE IF NOT EXISTS {database_target}.{table}
@@ -121,14 +102,5 @@ tpcds_keys_mapping = {
     "web_sales": ["ws_item_sk", "ws_order_number"],
     "web_site": ["web_site_sk"]
 }
-
-base_path = "s3a://lakehouse"
-
-write_tables_to_hudi(catalog="tpch", database="sf10", tables=tpch_tables, keys_mapping=tpch_keys_mapping, database_target="tpch_hudi", base_path=base_path)
-write_tables_to_hudi(catalog="tpcds", database="sf10", tables=tpcds_tables, keys_mapping=tpcds_keys_mapping, database_target="tpcds_hudi", base_path=base_path)
-
-spark.sql("USE tpch_hudi")
-spark.sql("SHOW TABLES").show(truncate=False)
-spark.sql("SELECT COUNT(*) FROM customer").show(truncate=False)
 
 spark.stop()
